@@ -8,6 +8,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     <title>Christmas Tree - by 小红书@沫沫</title>
     <style>
+        /* CSS变量 - 主题色 */
+        :root {
+            --accent-color: #00ffcc;
+            --accent-color-rgb: 0, 255, 204;
+        }
+
         /* 基础样式 */
         body {
             margin: 0;
@@ -61,7 +67,7 @@
             width: 40px;
             height: 40px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid #00ffcc;
+            border-top: 1px solid var(--accent-color);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -127,15 +133,15 @@
 
         .upload-btn:hover, .control-btn:hover {
             background: rgba(255, 255, 255, 0.1);
-            border-color: #00ffcc;
+            border-color: var(--accent-color);
             color: #fff;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.2);
         }
 
         .control-btn.active {
-            background: rgba(0, 255, 204, 0.1);
-            border-color: #00ffcc;
-            color: #00ffcc;
+            background: rgba(var(--accent-color-rgb), 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         #file-input, #import-input {
@@ -184,7 +190,7 @@
         }
 
         .tip-key {
-            color: #00ffcc;
+            color: var(--accent-color);
             display: inline-block;
             min-width: 60px;
         }
@@ -279,13 +285,13 @@
         }
 
         .photo-item:hover {
-            border-color: #00ffcc;
+            border-color: var(--accent-color);
             transform: translateY(-2px);
         }
 
         .photo-item.in-scene {
-            border-color: #00ffcc;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(var(--accent-color-rgb), 0.3);
         }
 
         .photo-thumb {
@@ -306,7 +312,7 @@
         }
 
         .photo-status {
-            color: #00ffcc;
+            color: var(--accent-color);
             font-size: 9px;
         }
 
@@ -334,8 +340,8 @@
         }
 
         .photo-action-btn.add-scene {
-            border-color: #00ffcc;
-            color: #00ffcc;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         .photo-action-btn.add-scene:hover {
@@ -386,8 +392,8 @@
         }
 
         .modal-action-btn.upload {
-            border-color: #00ffcc;
-            color: #00ffcc;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         .modal-action-btn.upload:hover {
@@ -418,7 +424,7 @@
         }
 
         .cache-stats .highlight {
-            color: #00ffcc;
+            color: var(--accent-color);
         }
 
         .cache-stats .warning {
@@ -476,7 +482,7 @@
 
         .form-group input:focus {
             outline: none;
-            border-color: #00ffcc;
+            border-color: var(--accent-color);
         }
 
         .form-group input[readonly] {
@@ -486,9 +492,9 @@
 
         .filename-preview {
             padding: 10px;
-            background: rgba(0, 255, 204, 0.1);
+            background: rgba(var(--accent-color-rgb), 0.1);
             border-radius: 6px;
-            color: #00ffcc;
+            color: var(--accent-color);
             font-size: 12px;
             word-break: break-all;
         }
@@ -518,9 +524,9 @@
         }
 
         .music-tab.active {
-            background: rgba(0, 255, 204, 0.1);
-            border-color: #00ffcc;
-            color: #00ffcc;
+            background: rgba(var(--accent-color-rgb), 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         .music-tab-content {
@@ -537,13 +543,13 @@
         }
 
         .upload-area:hover {
-            border-color: #00ffcc;
-            background: rgba(0, 255, 204, 0.05);
+            border-color: var(--accent-color);
+            background: rgba(var(--accent-color-rgb), 0.05);
         }
 
         .upload-area.dragover {
-            border-color: #00ffcc;
-            background: rgba(0, 255, 204, 0.1);
+            border-color: var(--accent-color);
+            background: rgba(var(--accent-color-rgb), 0.1);
         }
 
         .upload-icon {
@@ -577,7 +583,7 @@
         }
 
         .music-info-value {
-            color: #00ffcc;
+            color: var(--accent-color);
             font-size: 13px;
             word-break: break-all;
         }
@@ -605,14 +611,14 @@
 
         .music-control-btn:hover {
             background: rgba(255, 255, 255, 0.1);
-            border-color: #00ffcc;
-            color: #00ffcc;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         .music-control-btn.playing {
-            background: rgba(0, 255, 204, 0.1);
-            border-color: #00ffcc;
-            color: #00ffcc;
+            background: rgba(var(--accent-color-rgb), 0.1);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         .volume-control {
@@ -648,7 +654,7 @@
             appearance: none;
             width: 14px;
             height: 14px;
-            background: #00ffcc;
+            background: var(--accent-color);
             border-radius: 50%;
             cursor: pointer;
         }
@@ -656,7 +662,7 @@
         #music-volume::-moz-range-thumb {
             width: 14px;
             height: 14px;
-            background: #00ffcc;
+            background: var(--accent-color);
             border-radius: 50%;
             cursor: pointer;
             border: none;
@@ -694,7 +700,7 @@
 
         .music-visualizer .bar {
             width: 3px;
-            background: linear-gradient(to top, #00ffcc, #88ccff);
+            background: linear-gradient(to top, var(--accent-color), var(--accent-color-light, #88ccff));
             border-radius: 2px;
             animation: musicBar 0.5s ease-in-out infinite alternate;
         }
@@ -800,7 +806,7 @@
         }
 
         .toggle-switch input:checked + .toggle-slider {
-            background-color: #00ffcc;
+            background-color: var(--accent-color);
         }
 
         .toggle-switch input:checked + .toggle-slider:before {
@@ -879,12 +885,78 @@
         }
         
         .color-item input[type="color"]:hover {
-            border-color: #00ffcc;
-            box-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(var(--accent-color-rgb), 0.3);
+        }
+
+        /* 主题按钮样式 */
+        .theme-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .theme-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 90px;
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .theme-btn.active {
+            border-color: var(--accent-color);
+            background: rgba(var(--accent-color-rgb), 0.1);
+            box-shadow: 0 0 15px rgba(var(--accent-color-rgb), 0.3);
+        }
+
+        .theme-btn[data-theme="frozen"].active {
+            border-color: #88ccff;
+            background: rgba(136, 204, 255, 0.15);
+            box-shadow: 0 0 15px rgba(136, 204, 255, 0.4);
+        }
+
+        .theme-btn[data-theme="golden"].active {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.15);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .theme-btn[data-theme="classic"].active {
+            border-color: #ff4444;
+            background: rgba(255, 68, 68, 0.15);
+            box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+        }
+
+        .theme-icon {
+            font-size: 24px;
+        }
+
+        .theme-name {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .theme-btn.active .theme-name {
+            color: #fff;
         }
 
         .section-title {
-            color: #00ffcc;
+            color: var(--accent-color);
             font-size: 13px;
             font-weight: bold;
             margin-bottom: 12px;
@@ -925,7 +997,7 @@
             appearance: none;
             width: 14px;
             height: 14px;
-            background: #00ffcc;
+            background: var(--accent-color);
             border-radius: 50%;
             cursor: pointer;
         }
@@ -933,7 +1005,7 @@
         .setting-item input[type="range"]::-moz-range-thumb {
             width: 14px;
             height: 14px;
-            background: #00ffcc;
+            background: var(--accent-color);
             border-radius: 50%;
             cursor: pointer;
             border: none;
@@ -942,7 +1014,7 @@
         .setting-value {
             min-width: 35px;
             text-align: right;
-            color: #00ffcc;
+            color: var(--accent-color);
             font-size: 11px;
             font-family: monospace;
         }
@@ -1073,6 +1145,24 @@
             
             .settings-section-wide {
                 grid-column: span 2;
+            }
+
+            /* 主题按钮移动端适配 */
+            .theme-buttons {
+                gap: 6px;
+            }
+
+            .theme-btn {
+                padding: 8px 10px;
+                min-width: 70px;
+            }
+
+            .theme-icon {
+                font-size: 20px;
+            }
+
+            .theme-name {
+                font-size: 10px;
             }
 
             .section-title {
@@ -1278,14 +1368,14 @@
 
         .mobile-ctrl-btn:active {
             transform: scale(0.95);
-            background: rgba(0, 255, 204, 0.3);
-            border-color: #00ffcc;
+            background: rgba(var(--accent-color-rgb), 0.3);
+            border-color: var(--accent-color);
         }
 
         .mobile-ctrl-btn.active {
-            background: rgba(0, 255, 204, 0.2);
-            border-color: #00ffcc;
-            color: #00ffcc;
+            background: rgba(var(--accent-color-rgb), 0.2);
+            border-color: var(--accent-color);
+            color: var(--accent-color);
         }
 
         /* 安全区域适配 (iPhone X+) */
@@ -1608,6 +1698,24 @@
                             </label>
                         </div>
                     </div>
+                    <!-- 主题切换 -->
+                    <div class="settings-section settings-section-wide">
+                        <div class="section-title">� 主题风格<i/div>
+                        <div class="theme-buttons">
+                            <button class="theme-btn active" data-theme="frozen" title="冰雪奇缘">
+                                <span class="theme-icon">❄️</span>
+                                <span class="theme-name">冰雪奇缘</span>
+                            </button>
+                            <button class="theme-btn" data-theme="golden" title="璀璨金辉">
+                                <span class="theme-icon">✨</span>
+                                <span class="theme-name">璀璨金辉</span>
+                            </button>
+                            <button class="theme-btn" data-theme="classic" title="经典圣诞">
+                                <span class="theme-icon">🎅</span>
+                                <span class="theme-name">经典圣诞</span>
+                            </button>
+                        </div>
+                    </div>
                     <!-- 颜色设置 -->
                     <div class="settings-section settings-section-wide">
                         <div class="section-title">🎨 颜色</div>
@@ -1663,6 +1771,52 @@
         let snowSystem;
         let photoDataArray = []; // 存储所有照片的base64数据
         let photoIdToMeshMap = new Map(); // 照片ID到场景mesh的映射
+
+        // 主题配色方案
+        const THEMES = {
+            // 冰雪奇缘 - 蓝白冰雪风格
+            frozen: {
+                name: '冰雪奇缘',
+                ornamentColor: '#88ccff',    // 冰蓝色装饰球
+                whiteBallColor: '#ffffff',   // 纯白色球
+                boxColor: '#051020',         // 深蓝色方块
+                lightColor: '#0066ff',       // 蓝色灯光
+                starColor: '#ffff00',        // 金黄色星星
+                snowColor: '#ffffff',        // 白色雪花
+                bgGradient: ['#0b1a2a', '#000000'],  // 背景渐变
+                titleGradient: ['#e0f7fa', '#ffffff', '#88ccff'],  // 标题渐变
+                accentColor: '#00ffcc'       // 强调色
+            },
+            // 璀璨金辉 - 金色奢华风格
+            golden: {
+                name: '璀璨金辉',
+                ornamentColor: '#ffd700',    // 金色装饰球
+                whiteBallColor: '#fff8dc',   // 米白色球
+                boxColor: '#1a1000',         // 深棕色方块
+                lightColor: '#ffaa00',       // 橙金色灯光
+                starColor: '#ffffff',        // 白色星星
+                snowColor: '#fffacd',        // 淡金色雪花
+                bgGradient: ['#1a1000', '#000000'],  // 背景渐变
+                titleGradient: ['#ffd700', '#ffffff', '#ffaa00'],  // 标题渐变
+                accentColor: '#ffd700'       // 强调色
+            },
+            // 经典圣诞 - 红绿传统风格
+            classic: {
+                name: '经典圣诞',
+                ornamentColor: '#ff4444',    // 红色装饰球
+                whiteBallColor: '#228b22',   // 森林绿色球
+                boxColor: '#0a1a0a',         // 深绿色方块
+                lightColor: '#ff6600',       // 暖橙色灯光
+                starColor: '#ffd700',        // 金色星星
+                snowColor: '#ffffff',        // 白色雪花
+                bgGradient: ['#0a1a0a', '#000000'],  // 背景渐变
+                titleGradient: ['#ff4444', '#ffffff', '#228b22'],  // 标题渐变
+                accentColor: '#ff4444'       // 强调色
+            }
+        };
+
+        // 当前主题
+        let currentTheme = 'frozen';
 
         // 配置参数（可通过设置面板调整）
         const CONFIG = {
@@ -2730,6 +2884,75 @@
             });
         }
 
+        // ========== 主题切换函数 ==========
+        // 辅助函数：将十六进制颜色转换为RGB值
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : '0, 255, 204';
+        }
+
+        // 辅助函数：使颜色变亮
+        function lightenColor(hex, percent) {
+            const num = parseInt(hex.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = Math.min(255, (num >> 16) + amt);
+            const G = Math.min(255, ((num >> 8) & 0x00FF) + amt);
+            const B = Math.min(255, (num & 0x0000FF) + amt);
+            return `#${(0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1)}`;
+        }
+
+        function applyTheme(themeName) {
+            const theme = THEMES[themeName];
+            if (!theme) return;
+
+            currentTheme = themeName;
+
+            // 更新CONFIG中的颜色配置
+            CONFIG.ornamentColor = theme.ornamentColor;
+            CONFIG.whiteBallColor = theme.whiteBallColor;
+            CONFIG.boxColor = theme.boxColor;
+            CONFIG.lightColor = theme.lightColor;
+            CONFIG.starColor = theme.starColor;
+            CONFIG.snowColor = theme.snowColor;
+
+            // 应用颜色到场景
+            applyColorSettings();
+
+            // 更新背景渐变
+            document.body.style.background = `radial-gradient(circle at center, ${theme.bgGradient[0]} 0%, ${theme.bgGradient[1]} 100%)`;
+
+            // 更新标题渐变
+            const h1 = document.querySelector('h1');
+            if (h1) {
+                h1.style.background = `linear-gradient(135deg, ${theme.titleGradient[0]} 0%, ${theme.titleGradient[1]} 50%, ${theme.titleGradient[2]} 100%)`;
+                h1.style.backgroundSize = '200% auto';
+                h1.style.webkitBackgroundClip = 'text';
+                h1.style.backgroundClip = 'text';
+                h1.style.webkitTextFillColor = 'transparent';
+            }
+
+            // 更新UI强调色（CSS变量方式）
+            document.documentElement.style.setProperty('--accent-color', theme.accentColor);
+            document.documentElement.style.setProperty('--accent-color-rgb', hexToRgb(theme.accentColor));
+            document.documentElement.style.setProperty('--accent-color-light', lightenColor(theme.accentColor, 30));
+
+            // 更新颜色选择器的值
+            document.getElementById('cfg-ornament-color').value = theme.ornamentColor;
+            document.getElementById('cfg-whiteball-color').value = theme.whiteBallColor;
+            document.getElementById('cfg-box-color').value = theme.boxColor;
+            document.getElementById('cfg-light-color').value = theme.lightColor;
+            document.getElementById('cfg-star-color').value = theme.starColor;
+            document.getElementById('cfg-snow-color').value = theme.snowColor;
+
+            // 更新主题按钮状态
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.theme === themeName);
+            });
+
+            // 保存主题选择
+            localStorage.setItem('christmasTheme', themeName);
+        }
+
         // ========== 配置面板 ==========
         function setupSettingsPanel() {
             const modal = document.getElementById('settings-modal');
@@ -2737,6 +2960,20 @@
             const closeBtn = document.getElementById('settings-close');
             const resetBtn = document.getElementById('settings-reset');
             const applyBtn = document.getElementById('settings-apply');
+
+            // 主题按钮事件
+            document.querySelectorAll('.theme-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const themeName = btn.dataset.theme;
+                    applyTheme(themeName);
+                });
+            });
+
+            // 恢复保存的主题
+            const savedTheme = localStorage.getItem('christmasTheme');
+            if (savedTheme && THEMES[savedTheme]) {
+                applyTheme(savedTheme);
+            }
 
             // 打开面板
             settingsBtn.addEventListener('click', () => {
@@ -2828,14 +3065,9 @@
                 CONFIG.ornamentCount = 300;
                 CONFIG.whiteBallCount = 100;
                 CONFIG.photoScale = 2.5;
-                CONFIG.ornamentColor = '#88ccff';
-                CONFIG.whiteBallColor = '#ffffff';
-                CONFIG.boxColor = '#051020';
-                CONFIG.lightColor = '#0066ff';
-                CONFIG.starColor = '#ffff00';
-                CONFIG.snowColor = '#ffffff';
+                // 恢复到冰雪奇缘主题
+                applyTheme('frozen');
                 loadSettingsToUI();
-                applyColorSettings();
             });
         }
         
@@ -3747,10 +3979,14 @@
                         [5,9],[9,13],[13,17]
                     ];
 
+                    // 获取当前主题的强调色
+                    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent-color').trim() || '#00ffcc';
+                    const accentRgb = getComputedStyle(document.documentElement).getPropertyValue('--accent-color-rgb').trim() || '0, 255, 204';
+                    
                     webcamCtx.shadowBlur = 8;
-                    webcamCtx.shadowColor = '#00ffcc';
+                    webcamCtx.shadowColor = accentColor;
                     webcamCtx.lineWidth = 3;
-                    webcamCtx.strokeStyle = 'rgba(0, 255, 204, 0.9)';
+                    webcamCtx.strokeStyle = `rgba(${accentRgb}, 0.9)`;
 
                     for (let [s, e] of connections) {
                         webcamCtx.beginPath();
@@ -3766,7 +4002,7 @@
                     }
 
                     // 绘制关键节点
-                    webcamCtx.fillStyle = 'rgba(0, 255, 204, 0.8)';
+                    webcamCtx.fillStyle = `rgba(${accentRgb}, 0.8)`;
                     for (let i of [0, 4, 8, 12, 16, 20]) {
                         webcamCtx.beginPath();
                         webcamCtx.arc(
