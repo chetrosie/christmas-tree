@@ -663,47 +663,97 @@
         }
 
         /* ========== 音乐播放动效样式 ========== */
-        .music-visualizer {
+        .music-widget {
             position: fixed;
             left: 20px;
-            bottom: 20px;
+            top: 30px;
             display: flex;
-            align-items: flex-end;
-            gap: 3px;
-            height: 30px;
+            align-items: center;
+            gap: 8px;
             padding: 8px 12px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            cursor: pointer;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 25px;
             z-index: 100;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
 
-        .music-visualizer:hover {
-            background: rgba(0, 0, 0, 0.7);
-            border-color: rgba(0, 255, 204, 0.3);
-            transform: scale(1.05);
+        .music-widget-main {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .music-visualizer {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 20px;
         }
 
         .music-visualizer .bar {
-            width: 4px;
+            width: 3px;
             background: linear-gradient(to top, #00ffcc, #88ccff);
             border-radius: 2px;
             animation: musicBar 0.5s ease-in-out infinite alternate;
         }
 
-        .music-visualizer .bar:nth-child(1) { height: 8px; animation-delay: 0s; }
-        .music-visualizer .bar:nth-child(2) { height: 16px; animation-delay: 0.1s; }
-        .music-visualizer .bar:nth-child(3) { height: 24px; animation-delay: 0.2s; }
-        .music-visualizer .bar:nth-child(4) { height: 12px; animation-delay: 0.3s; }
-        .music-visualizer .bar:nth-child(5) { height: 20px; animation-delay: 0.4s; }
+        .music-visualizer .bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .music-visualizer .bar:nth-child(2) { height: 12px; animation-delay: 0.1s; }
+        .music-visualizer .bar:nth-child(3) { height: 18px; animation-delay: 0.2s; }
+        .music-visualizer .bar:nth-child(4) { height: 10px; animation-delay: 0.3s; }
+        .music-visualizer .bar:nth-child(5) { height: 14px; animation-delay: 0.4s; }
 
         .music-visualizer.paused .bar {
             animation: none;
-            height: 6px !important;
+            height: 4px !important;
             opacity: 0.5;
+        }
+
+        .music-name {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 12px;
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-widget-controls {
+            display: flex;
+            gap: 4px;
+            opacity: 0;
+            max-width: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .music-widget:hover .music-widget-controls {
+            opacity: 1;
+            max-width: 120px;
+            margin-left: 8px;
+        }
+
+        .widget-btn {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .widget-btn:hover {
+            background: rgba(0, 255, 204, 0.3);
+            color: #fff;
+            transform: scale(1.1);
         }
 
         @keyframes musicBar {
@@ -1120,15 +1170,43 @@
             }
 
             /* 音乐动效移动端适配 */
-            .music-visualizer {
+            .music-widget {
                 left: 10px;
-                bottom: 10px;
+                top: 10px;
                 padding: 6px 10px;
-                height: 24px;
             }
 
-            .music-visualizer .bar {
-                width: 3px;
+            .music-name {
+                max-width: 0;
+                opacity: 0;
+                font-size: 11px;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .music-widget.expanded .music-name {
+                max-width: 100px;
+                opacity: 1;
+            }
+
+            .music-widget-controls {
+                display: flex;
+                opacity: 0;
+                max-width: 0;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .music-widget.expanded .music-widget-controls {
+                opacity: 1;
+                max-width: 100px;
+                margin-left: 5px;
+            }
+
+            .widget-btn {
+                width: 24px;
+                height: 24px;
+                font-size: 10px;
             }
         }
 
@@ -1483,6 +1561,25 @@
                             <input type="range" id="cfg-snow-size" min="1" max="10" value="2">
                             <span class="setting-value" id="cfg-snow-size-val">0.2</span>
                         </div>
+                        <div class="setting-item">
+                            <label>雪花数量</label>
+                            <input type="range" id="cfg-snow-count" min="100" max="3000" value="1000" step="100">
+                            <span class="setting-value" id="cfg-snow-count-val">1000</span>
+                        </div>
+                    </div>
+                    <!-- 装饰球设置 -->
+                    <div class="settings-section">
+                        <div class="section-title">🔵 装饰球</div>
+                        <div class="setting-item">
+                            <label>蓝色球数量</label>
+                            <input type="range" id="cfg-ornament-count" min="50" max="500" value="300" step="10">
+                            <span class="setting-value" id="cfg-ornament-count-val">300</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>白色球数量</label>
+                            <input type="range" id="cfg-whiteball-count" min="0" max="300" value="100" step="10">
+                            <span class="setting-value" id="cfg-whiteball-count-val">100</span>
+                        </div>
                     </div>
                     <!-- 照片设置 -->
                     <div class="settings-section">
@@ -1518,6 +1615,10 @@
                             <div class="color-item">
                                 <input type="color" id="cfg-ornament-color" value="#88ccff">
                                 <label>装饰球</label>
+                            </div>
+                            <div class="color-item">
+                                <input type="color" id="cfg-whiteball-color" value="#ffffff">
+                                <label>白色球</label>
                             </div>
                             <div class="color-item">
                                 <input type="color" id="cfg-box-color" value="#051020">
@@ -1576,9 +1677,14 @@
             starBlink: 1,
             snowSpeed: 0.03,
             snowSize: 0.2,
+            snowCount: 1000,             // 雪花数量
             photoScale: 2.5,
+            // 数量配置
+            ornamentCount: 300,          // 装饰球数量（蓝色）
+            whiteBallCount: 100,         // 白色球数量
             // 颜色配置
             ornamentColor: '#88ccff',    // 装饰球颜色
+            whiteBallColor: '#ffffff',   // 白色球颜色
             boxColor: '#051020',         // 方块颜色
             lightColor: '#0066ff',       // 内部灯光颜色
             starColor: '#ffff00',        // 星星颜色
@@ -1927,33 +2033,46 @@
             ]);
             const candy = new THREE.TubeGeometry(curve, 16, 0.08, 8, false);
 
-            for (let i = 0; i < 1500; i++) {
-                const r = Math.random();
-                let mesh, type;
-
-                if (r < 0.4) {
-                    mesh = new THREE.Mesh(box, MATERIALS.green);
-                    type = 'BOX';
-                } else if (r < 0.7) {
-                    mesh = new THREE.Mesh(box, MATERIALS.gold);
-                    type = 'GOLD_BOX';
-                } else if (r < 0.92) {
-                    mesh = new THREE.Mesh(sphere, MATERIALS.gold);
-                    type = 'GOLD_SPHERE';
-                } else if (r < 0.97) {
-                    mesh = new THREE.Mesh(sphere, MATERIALS.red);
-                    type = 'RED';
-                } else {
-                    mesh = new THREE.Mesh(candy, MATERIALS.candy);
-                    type = 'CANE';
-                }
-
+            // 创建装饰球（蓝色）
+            for (let i = 0; i < CONFIG.ornamentCount; i++) {
+                const mesh = new THREE.Mesh(sphere, MATERIALS.gold);
                 const s = 0.4 + Math.random() * 0.5;
                 mesh.scale.set(s, s, s);
                 mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+                mainGroup.add(mesh);
+                particleSystem.push(new Particle(mesh, 'GOLD_SPHERE'));
+            }
 
+            // 创建白色球
+            for (let i = 0; i < CONFIG.whiteBallCount; i++) {
+                const mesh = new THREE.Mesh(sphere, MATERIALS.red);
+                const s = 0.4 + Math.random() * 0.5;
+                mesh.scale.set(s, s, s);
+                mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+                mainGroup.add(mesh);
+                particleSystem.push(new Particle(mesh, 'RED'));
+            }
+
+            // 创建方块（绿色和金色）
+            for (let i = 0; i < 600; i++) {
+                const isGold = Math.random() < 0.4;
+                const mesh = new THREE.Mesh(box, isGold ? MATERIALS.gold : MATERIALS.green);
+                const type = isGold ? 'GOLD_BOX' : 'BOX';
+                const s = 0.4 + Math.random() * 0.5;
+                mesh.scale.set(s, s, s);
+                mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
                 mainGroup.add(mesh);
                 particleSystem.push(new Particle(mesh, type));
+            }
+
+            // 创建糖果棒
+            for (let i = 0; i < 50; i++) {
+                const mesh = new THREE.Mesh(candy, MATERIALS.candy);
+                const s = 0.4 + Math.random() * 0.5;
+                mesh.scale.set(s, s, s);
+                mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+                mainGroup.add(mesh);
+                particleSystem.push(new Particle(mesh, 'CANE'));
             }
 
             // 顶部五角星
@@ -2001,8 +2120,9 @@
 
         // 创建雪花
         function createSnow() {
-            const positions = new Float32Array(3000);
-            for (let i = 0; i < 3000; i += 3) {
+            const snowCount = CONFIG.snowCount * 3; // 每个雪花3个坐标值
+            const positions = new Float32Array(snowCount);
+            for (let i = 0; i < snowCount; i += 3) {
                 positions[i] = (Math.random() - 0.5) * 80;
                 positions[i + 1] = (Math.random() - 0.5) * 80 + 20;
                 positions[i + 2] = (Math.random() - 0.5) * 80;
@@ -2012,7 +2132,7 @@
                 new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(positions, 3)),
                 new THREE.PointsMaterial({
                     color: 0xffffff,
-                    size: 0.2,
+                    size: CONFIG.snowSize,
                     transparent: true,
                     opacity: 0.6,
                     blending: THREE.AdditiveBlending
@@ -2156,6 +2276,10 @@
             // 摄像头预览
             const webcamWrapper = document.getElementById('webcam-wrapper');
             if (webcamWrapper) webcamWrapper.style.display = newDisplay;
+            
+            // 音乐播放器小部件
+            const musicWidget = document.getElementById('music-widget');
+            if (musicWidget) musicWidget.style.display = uiHidden ? 'none' : 'flex';
         }
 
         // 事件监听
@@ -2639,6 +2763,9 @@
                 'cfg-star-blink': { config: 'starBlink', display: v => (v / 10).toFixed(1) },
                 'cfg-snow-speed': { config: 'snowSpeed', display: v => (v / 100).toFixed(2) },
                 'cfg-snow-size': { config: 'snowSize', display: v => (v / 10).toFixed(1) },
+                'cfg-snow-count': { config: 'snowCount', display: v => v },
+                'cfg-ornament-count': { config: 'ornamentCount', display: v => v },
+                'cfg-whiteball-count': { config: 'whiteBallCount', display: v => v },
                 'cfg-photo-scale': { config: 'photoScale', display: v => (v / 10).toFixed(1) }
             };
 
@@ -2665,10 +2792,14 @@
                 CONFIG.starBlink = parseInt(document.getElementById('cfg-star-blink').value) / 10;
                 CONFIG.snowSpeed = parseInt(document.getElementById('cfg-snow-speed').value) / 100;
                 CONFIG.snowSize = parseInt(document.getElementById('cfg-snow-size').value) / 10;
+                CONFIG.snowCount = parseInt(document.getElementById('cfg-snow-count').value);
+                CONFIG.ornamentCount = parseInt(document.getElementById('cfg-ornament-count').value);
+                CONFIG.whiteBallCount = parseInt(document.getElementById('cfg-whiteball-count').value);
                 CONFIG.photoScale = parseInt(document.getElementById('cfg-photo-scale').value) / 10;
                 
                 // 获取颜色配置
                 CONFIG.ornamentColor = document.getElementById('cfg-ornament-color').value;
+                CONFIG.whiteBallColor = document.getElementById('cfg-whiteball-color').value;
                 CONFIG.boxColor = document.getElementById('cfg-box-color').value;
                 CONFIG.lightColor = document.getElementById('cfg-light-color').value;
                 CONFIG.starColor = document.getElementById('cfg-star-color').value;
@@ -2693,8 +2824,12 @@
                 CONFIG.starBlink = 1;
                 CONFIG.snowSpeed = 0.03;
                 CONFIG.snowSize = 0.2;
+                CONFIG.snowCount = 1000;
+                CONFIG.ornamentCount = 300;
+                CONFIG.whiteBallCount = 100;
                 CONFIG.photoScale = 2.5;
                 CONFIG.ornamentColor = '#88ccff';
+                CONFIG.whiteBallColor = '#ffffff';
                 CONFIG.boxColor = '#051020';
                 CONFIG.lightColor = '#0066ff';
                 CONFIG.starColor = '#ffff00';
@@ -2720,6 +2855,12 @@
                 MATERIALS.gold.emissive.copy(emissiveColor);
                 MATERIALS.gold.emissiveIntensity = 0.5;
                 MATERIALS.gold.needsUpdate = true;
+            }
+            // 应用白色球颜色
+            if (MATERIALS.red) {
+                const whiteBallHex = parseInt(CONFIG.whiteBallColor.replace('#', ''), 16);
+                MATERIALS.red.color.setHex(whiteBallHex);
+                MATERIALS.red.needsUpdate = true;
             }
             // 应用方块颜色
             if (MATERIALS.green) {
@@ -2772,8 +2913,15 @@
             document.getElementById('cfg-snow-size-val').textContent = CONFIG.snowSize.toFixed(1);
             document.getElementById('cfg-photo-scale').value = CONFIG.photoScale * 10;
             document.getElementById('cfg-photo-scale-val').textContent = CONFIG.photoScale.toFixed(1);
+            document.getElementById('cfg-snow-count').value = CONFIG.snowCount;
+            document.getElementById('cfg-snow-count-val').textContent = CONFIG.snowCount;
+            document.getElementById('cfg-ornament-count').value = CONFIG.ornamentCount;
+            document.getElementById('cfg-ornament-count-val').textContent = CONFIG.ornamentCount;
+            document.getElementById('cfg-whiteball-count').value = CONFIG.whiteBallCount;
+            document.getElementById('cfg-whiteball-count-val').textContent = CONFIG.whiteBallCount;
             // 加载颜色配置
             document.getElementById('cfg-ornament-color').value = CONFIG.ornamentColor;
+            document.getElementById('cfg-whiteball-color').value = CONFIG.whiteBallColor;
             document.getElementById('cfg-box-color').value = CONFIG.boxColor;
             document.getElementById('cfg-light-color').value = CONFIG.lightColor;
             document.getElementById('cfg-star-color').value = CONFIG.starColor;
@@ -3250,22 +3398,68 @@
             bgMusic.addEventListener('pause', () => updatePlayState(false));
 
             function updatePlayState(playing) {
+                const widgetPlayBtn = document.getElementById('widget-play-btn');
                 if (playing) {
                     playBtn.classList.add('playing');
                     mainMusicBtn.classList.add('active');
                     visualizer.classList.remove('paused');
+                    if (widgetPlayBtn) widgetPlayBtn.textContent = '⏸';
                 } else {
                     playBtn.classList.remove('playing');
                     mainMusicBtn.classList.remove('active');
                     visualizer.classList.add('paused');
+                    if (widgetPlayBtn) widgetPlayBtn.textContent = '▶';
                 }
             }
 
-            // 左下角音乐动效点击控制
-            visualizer.addEventListener('click', () => {
+            // 音乐小部件控制
+            const musicWidget = document.getElementById('music-widget');
+            const widgetPlayBtn = document.getElementById('widget-play-btn');
+            const widgetNextBtn = document.getElementById('widget-next-btn');
+            const widgetSettingsBtn = document.getElementById('widget-settings-btn');
+            const widgetMusicName = document.getElementById('music-widget-name');
+
+            // 检测是否移动端
+            const isMobileDevice = () => window.innerWidth <= 768;
+
+            // 点击动效区域 - 移动端展开/收起，PC端播放/暂停
+            document.querySelector('.music-widget-main').addEventListener('click', () => {
+                if (!musicEnabled) return;
+                if (isMobileDevice()) {
+                    // 移动端：切换展开状态
+                    musicWidget.classList.toggle('expanded');
+                } else {
+                    // PC端：播放/暂停
+                    if (bgMusic.paused) fadeIn();
+                    else fadeOut();
+                }
+            });
+
+            // 点击其他地方收起移动端展开的面板
+            document.addEventListener('click', (e) => {
+                if (isMobileDevice() && !musicWidget.contains(e.target)) {
+                    musicWidget.classList.remove('expanded');
+                }
+            });
+
+            // 播放/暂停按钮
+            widgetPlayBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 if (!musicEnabled) return;
                 if (bgMusic.paused) fadeIn();
                 else fadeOut();
+            });
+
+            // 下一首按钮
+            widgetNextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                playNext();
+            });
+
+            // 设置按钮
+            widgetSettingsBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                modal.classList.add('show');
             });
 
             // 音量控制
@@ -3299,6 +3493,7 @@
 
             function updateMusicInfo() {
                 document.getElementById('current-music-name').textContent = currentMusicName;
+                widgetMusicName.textContent = currentMusicName;
             }
 
             function getFileNameFromUrl(url) {
@@ -3319,9 +3514,9 @@
                     localStorage.setItem('musicEnabled', musicEnabled);
                     if (!musicEnabled) {
                         fadeOut();
-                        visualizer.style.display = 'none';
+                        musicWidget.style.display = 'none';
                     } else {
-                        visualizer.style.display = 'flex';
+                        musicWidget.style.display = 'flex';
                         if (musicAutoplay) fadeIn();
                     }
                 });
@@ -3359,7 +3554,7 @@
                 }
 
                 if (!musicEnabled) {
-                    visualizer.style.display = 'none';
+                    musicWidget.style.display = 'none';
                 }
 
                 updateMusicInfo();
@@ -3626,10 +3821,15 @@
                 // 非FOCUS模式
                 bloomPass.strength = THREE.MathUtils.lerp(bloomPass.strength, CONFIG.bloomStrength, 2 * dt);
                 
-                // 移动端相机距离更远，让圣诞树显示更小
+                // 移动端和PC端使用不同的默认距离
                 const isMobile = window.innerWidth <= 768;
-                const mobileMultiplier = isMobile ? 1.6 : 1;
-                let camZ = STATE.mode === 'SCATTER' ? CONFIG.scatterDistance * mobileMultiplier : CONFIG.treeDistance * mobileMultiplier;
+                let camZ;
+                if (STATE.mode === 'SCATTER') {
+                    camZ = isMobile ? CONFIG.scatterDistance * 1.6 : CONFIG.scatterDistance;
+                } else {
+                    // 树模式：移动端默认30，PC端使用配置值
+                    camZ = isMobile ? 45 : CONFIG.treeDistance;
+                }
                 
                 // 保留捏合平移的偏移量
                 STATE.camera.targetPos.set(STATE.pinch.offsetX, 2 + STATE.pinch.offsetY, camZ);
