@@ -805,21 +805,41 @@
                 padding: 0 10px;
             }
 
-            /* 按钮区域 - 移到标题下方 */
+            /* 按钮区域 - 右上角竖向排列小图标 */
             .upload-wrapper {
-                top: 50px;
-                right: auto;
-                left: 50%;
-                transform: translateX(-50%);
+                top: 10px;
+                right: 10px;
+                left: auto;
+                transform: none;
                 gap: 8px;
+                flex-direction: column;
                 flex-wrap: nowrap;
-                justify-content: center;
+                justify-content: flex-start;
+                align-items: flex-end;
             }
 
             .upload-btn, .control-btn {
-                padding: 6px 10px;
-                font-size: 10px;
-                gap: 4px;
+                padding: 8px;
+                font-size: 14px;
+                gap: 0;
+                border-radius: 50%;
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+            }
+
+            /* 移动端隐藏按钮文字，只显示图标 */
+            .control-btn .btn-text {
+                display: none;
+            }
+            
+            .control-btn .btn-icon {
+                font-size: 16px;
+                color: rgba(255, 255, 255, 0.8);
+            }
+
+            .mobile-ctrl-btn i {
+                font-size: 22px;
             }
 
             /* 操作提示 - 移动端隐藏，因为有底部触摸按钮 */
@@ -886,14 +906,22 @@
                 font-size: 8px;
             }
 
-            /* 配置面板移动端适配 - 双列显示 */
+            /* 配置面板移动端适配 */
+            .settings-modal-content {
+                max-width: 95% !important;
+            }
+            
             .settings-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
+                gap: 8px;
             }
 
             .settings-section {
-                padding: 10px;
+                padding: 8px;
+            }
+            
+            .settings-section-wide {
+                grid-column: span 2;
             }
 
             .section-title {
@@ -918,6 +946,20 @@
 
             .setting-value {
                 min-width: 30px;
+            }
+            
+            .color-settings-row {
+                gap: 10px;
+            }
+            
+            .color-item {
+                flex: 1;
+                min-width: 70px;
+            }
+            
+            .color-item label {
+                font-size: 10px;
+                min-width: 35px;
                 font-size: 10px;
             }
 
@@ -1074,8 +1116,10 @@
             }
         }
     </script>
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
+<body></body>
     <div id="loader">
         <div class="spinner"></div>
         <div class="loader-text">Loading...</div>
@@ -1086,16 +1130,16 @@
     <div id="ui-layer">
         <h1>Merry Christmas</h1>
         <div class="upload-wrapper">
-            <button class="control-btn" id="manage-btn" title="管理缓存照片">📁 管理</button>
-            <button class="control-btn" id="music-btn" title="播放/暂停音乐">🎵 音乐</button>
-            <button class="control-btn" id="settings-btn" title="参数设置">⚙️ 设置</button>
+            <button class="control-btn" id="manage-btn" title="管理缓存照片"><i class="btn-icon fa-solid fa-folder-open"></i><span class="btn-text">管理</span></button>
+            <button class="control-btn" id="music-btn" title="播放/暂停音乐"><i class="btn-icon fa-solid fa-music"></i><span class="btn-text">音乐</span></button>
+            <button class="control-btn" id="settings-btn" title="参数设置"><i class="btn-icon fa-solid fa-gear"></i><span class="btn-text">设置</span></button>
         </div>
         <!-- 移动端触摸控制按钮 -->
         <div id="mobile-controls">
-            <button class="mobile-ctrl-btn" id="mobile-tree" title="圣诞树模式">🎄</button>
-            <button class="mobile-ctrl-btn" id="mobile-scatter" title="星河散开">✨</button>
-            <button class="mobile-ctrl-btn" id="mobile-photo" title="锁定照片">📷</button>
-            <button class="mobile-ctrl-btn" id="mobile-next" title="下一张">⏭️</button>
+            <button class="mobile-ctrl-btn" id="mobile-tree" title="圣诞树模式"><i class="fa-solid fa-tree"></i></button>
+            <button class="mobile-ctrl-btn" id="mobile-scatter" title="星河散开"><i class="fa-solid fa-star"></i></button>
+            <button class="mobile-ctrl-btn" id="mobile-photo" title="锁定照片"><i class="fa-solid fa-image"></i></button>
+            <button class="mobile-ctrl-btn" id="mobile-next" title="下一张"><i class="fa-solid fa-forward"></i></button>
         </div>
     </div>
 
@@ -1633,11 +1677,14 @@
             MATERIALS.candy = new THREE.MeshStandardMaterial({ map: texture, roughness: 0.4 });
         }
 
+        // 灯光引用
+        let innerLight;
+        
         // 设置灯光
         function setupLights() {
             scene.add(new THREE.AmbientLight(0xffffff, 0.6));
 
-            const innerLight = new THREE.PointLight(0x0066ff, 2, 20);
+            innerLight = new THREE.PointLight(0x0066ff, 2, 20);
             innerLight.position.set(0, 5, 0);
             mainGroup.add(innerLight);
 
@@ -2001,6 +2048,16 @@
                 // 3键或P键 - 锁定照片模式（对应捏合手势）
                 if (key === '3' || key === 'p') {
                     STATE.mode = 'FOCUS';
+                    // 重置所有偏移量，让照片居中
+                    STATE.pinch.offsetX = 0;
+                    STATE.pinch.offsetY = 0;
+                    STATE.pinch.zoom = 1;
+                    STATE.handPinch.offsetX = 0;
+                    STATE.handPinch.offsetY = 0;
+                    if (camera) {
+                        camera.fov = 42;
+                        camera.updateProjectionMatrix();
+                    }
                     if (!STATE.focusTarget) {
                         const photos = particleSystem.filter(p => p.type === 'PHOTO');
                         if (photos.length) {
@@ -2442,35 +2499,75 @@
                 CONFIG.snowSpeed = parseInt(document.getElementById('cfg-snow-speed').value) / 100;
                 CONFIG.snowSize = parseInt(document.getElementById('cfg-snow-size').value) / 10;
                 CONFIG.photoScale = parseInt(document.getElementById('cfg-photo-scale').value) / 10;
+                
+                // 获取颜色配置
+                CONFIG.ornamentColor = document.getElementById('cfg-ornament-color').value;
+                CONFIG.lightColor = document.getElementById('cfg-light-color').value;
+                CONFIG.starColor = document.getElementById('cfg-star-color').value;
+                CONFIG.snowColor = document.getElementById('cfg-snow-color').value;
 
-                // 应用泛光设置
-                if (bloomPass) {
-                    bloomPass.radius = CONFIG.bloomRadius;
-                }
-                // 应用雪花大小
-                if (snowSystem && snowSystem.material) {
-                    snowSystem.material.size = CONFIG.snowSize;
-                }
+                // 应用所有颜色和效果设置
+                applyColorSettings();
 
                 modal.classList.remove('show');
             });
 
             // 恢复默认
             resetBtn.addEventListener('click', () => {
-                CONFIG.treeDistance = 14;
-                CONFIG.scatterDistance = 22;
+                CONFIG.treeDistance = 35;
+                CONFIG.scatterDistance = 45;
                 CONFIG.focusDistance = 8;
                 CONFIG.treeRotate = 0.3;
-                CONFIG.scatterRotate = 0.05;
-                CONFIG.bloomStrength = 1.5;
-                CONFIG.bloomRadius = 0.8;
-                CONFIG.starGlow = 2.5;
-                CONFIG.starBlink = 0.8;
-                CONFIG.snowSpeed = 0.08;
+                CONFIG.scatterRotate = 0.1;
+                CONFIG.bloomStrength = 1.8;
+                CONFIG.bloomRadius = 1;
+                CONFIG.starGlow = 3;
+                CONFIG.starBlink = 1;
+                CONFIG.snowSpeed = 0.03;
                 CONFIG.snowSize = 0.2;
                 CONFIG.photoScale = 2.5;
+                CONFIG.ornamentColor = '#88ccff';
+                CONFIG.lightColor = '#0066ff';
+                CONFIG.starColor = '#ffff00';
+                CONFIG.snowColor = '#ffffff';
                 loadSettingsToUI();
+                applyColorSettings();
             });
+        }
+        
+        // 应用颜色设置到场景
+        function applyColorSettings() {
+            // 应用雪花颜色
+            if (snowSystem && snowSystem.material) {
+                snowSystem.material.size = CONFIG.snowSize;
+                snowSystem.material.color.set(CONFIG.snowColor);
+                snowSystem.material.needsUpdate = true;
+            }
+            // 应用装饰球颜色
+            if (MATERIALS.gold) {
+                const ornamentHex = parseInt(CONFIG.ornamentColor.replace('#', ''), 16);
+                MATERIALS.gold.color.setHex(ornamentHex);
+                const emissiveColor = new THREE.Color(ornamentHex).multiplyScalar(0.3);
+                MATERIALS.gold.emissive.copy(emissiveColor);
+                MATERIALS.gold.emissiveIntensity = 0.5;
+                MATERIALS.gold.needsUpdate = true;
+            }
+            // 应用星星颜色
+            if (MATERIALS.star) {
+                const starHex = parseInt(CONFIG.starColor.replace('#', ''), 16);
+                MATERIALS.star.color.setHex(starHex);
+                MATERIALS.star.emissive.setHex(starHex);
+                MATERIALS.star.needsUpdate = true;
+            }
+            // 应用灯光颜色
+            if (innerLight) {
+                const lightHex = parseInt(CONFIG.lightColor.replace('#', ''), 16);
+                innerLight.color.setHex(lightHex);
+            }
+            // 应用泛光设置
+            if (bloomPass) {
+                bloomPass.radius = CONFIG.bloomRadius;
+            }
         }
 
         function loadSettingsToUI() {
@@ -2498,6 +2595,11 @@
             document.getElementById('cfg-snow-size-val').textContent = CONFIG.snowSize.toFixed(1);
             document.getElementById('cfg-photo-scale').value = CONFIG.photoScale * 10;
             document.getElementById('cfg-photo-scale-val').textContent = CONFIG.photoScale.toFixed(1);
+            // 加载颜色配置
+            document.getElementById('cfg-ornament-color').value = CONFIG.ornamentColor;
+            document.getElementById('cfg-light-color').value = CONFIG.lightColor;
+            document.getElementById('cfg-star-color').value = CONFIG.starColor;
+            document.getElementById('cfg-snow-color').value = CONFIG.snowColor;
         }
 
         // ========== 移动端触摸控制 ==========
@@ -2531,6 +2633,17 @@
             // 锁定照片模式
             mobilePhoto.addEventListener('click', () => {
                 STATE.mode = 'FOCUS';
+                // 重置所有偏移量，让照片居中
+                STATE.pinch.offsetX = 0;
+                STATE.pinch.offsetY = 0;
+                STATE.pinch.zoom = 1;
+                STATE.handPinch.offsetX = 0;
+                STATE.handPinch.offsetY = 0;
+                // 重置相机FOV
+                if (camera) {
+                    camera.fov = 42;
+                    camera.updateProjectionMatrix();
+                }
                 if (!STATE.focusTarget) {
                     const photos = particleSystem.filter(p => p.type === 'PHOTO');
                     if (photos.length) {
@@ -2547,6 +2660,16 @@
                     // 如果不在FOCUS模式，先切换到FOCUS模式
                     if (STATE.mode !== 'FOCUS') {
                         STATE.mode = 'FOCUS';
+                        // 重置所有偏移量
+                        STATE.pinch.offsetX = 0;
+                        STATE.pinch.offsetY = 0;
+                        STATE.pinch.zoom = 1;
+                        STATE.handPinch.offsetX = 0;
+                        STATE.handPinch.offsetY = 0;
+                        if (camera) {
+                            camera.fov = 42;
+                            camera.updateProjectionMatrix();
+                        }
                     }
                     if (photos.length > 1 && STATE.focusTarget) {
                         const currentIndex = photos.findIndex(p => p.mesh === STATE.focusTarget);
@@ -2559,10 +2682,11 @@
                 }
             });
 
-            // 触摸滑动控制旋转（单指滑动旋转）
+            // 触摸滑动控制
             let touchStartX = 0;
             let touchStartY = 0;
             const canvas = document.getElementById('canvas-container');
+            const FOCUS_PAN_SENSITIVITY = 0.015; // FOCUS模式下平移灵敏度
 
             canvas.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 1) {
@@ -2572,15 +2696,26 @@
             }, { passive: true });
 
             canvas.addEventListener('touchmove', (e) => {
-                // 单指滑动旋转（所有模式下都可用）
+                // 单指滑动
                 if (e.touches.length === 1) {
                     const deltaX = e.touches[0].clientX - touchStartX;
                     const deltaY = e.touches[0].clientY - touchStartY;
                     
-                    // 手动控制旋转
-                    STATE.rotation.y += deltaX * 0.005;
-                    STATE.rotation.x += deltaY * 0.002;
-                    STATE.rotation.x = Math.max(-0.5, Math.min(0.5, STATE.rotation.x));
+                    if (STATE.mode === 'FOCUS') {
+                        // FOCUS模式下：单指拖动移动照片
+                        STATE.handPinch.offsetX -= deltaX * FOCUS_PAN_SENSITIVITY;
+                        STATE.handPinch.offsetY += deltaY * FOCUS_PAN_SENSITIVITY;
+                        
+                        // 限制平移范围
+                        const maxOffset = 5;
+                        STATE.handPinch.offsetX = Math.max(-maxOffset, Math.min(maxOffset, STATE.handPinch.offsetX));
+                        STATE.handPinch.offsetY = Math.max(-maxOffset, Math.min(maxOffset, STATE.handPinch.offsetY));
+                    } else {
+                        // 其他模式：单指滑动旋转
+                        STATE.rotation.y += deltaX * 0.005;
+                        STATE.rotation.x += deltaY * 0.002;
+                        STATE.rotation.x = Math.max(-0.5, Math.min(0.5, STATE.rotation.x));
+                    }
                     
                     touchStartX = e.touches[0].clientX;
                     touchStartY = e.touches[0].clientY;
@@ -3221,13 +3356,14 @@
                 const targetWorldPos = new THREE.Vector3();
                 STATE.focusTarget.getWorldPosition(targetWorldPos);
                 
-                // 相机直接正对照片，从正前方观看（Z轴方向）
+                // 相机距离
                 const cameraDistance = CONFIG.focusDistance;
                 
-                // 在FOCUS模式下，如果手势捏合激活，应用手势平移偏移
-                const handOffsetX = STATE.handPinch.active ? STATE.handPinch.offsetX : 0;
-                const handOffsetY = STATE.handPinch.active ? STATE.handPinch.offsetY : 0;
+                // 在FOCUS模式下，应用平移偏移（支持手势捏合和触摸拖动）
+                const handOffsetX = STATE.handPinch.offsetX;
+                const handOffsetY = STATE.handPinch.offsetY;
                 
+                // 相机位置：从正前方看向照片，Z轴固定
                 STATE.camera.targetPos.set(
                     targetWorldPos.x + handOffsetX, 
                     targetWorldPos.y + handOffsetY, 
