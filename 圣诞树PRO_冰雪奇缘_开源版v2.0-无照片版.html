@@ -1283,13 +1283,13 @@
                         <div class="section-title">📷 相机</div>
                         <div class="setting-item">
                             <label>树模式距离</label>
-                            <input type="range" id="cfg-tree-distance" min="10" max="40" value="14">
-                            <span class="setting-value" id="cfg-tree-distance-val">14</span>
+                            <input type="range" id="cfg-tree-distance" min="20" max="80" value="45">
+                            <span class="setting-value" id="cfg-tree-distance-val">45</span>
                         </div>
                         <div class="setting-item">
                             <label>散开距离</label>
-                            <input type="range" id="cfg-scatter-distance" min="15" max="50" value="22">
-                            <span class="setting-value" id="cfg-scatter-distance-val">22</span>
+                            <input type="range" id="cfg-scatter-distance" min="25" max="80" value="55">
+                            <span class="setting-value" id="cfg-scatter-distance-val">55</span>
                         </div>
                         <div class="setting-item">
                             <label>聚焦距离</label>
@@ -1412,8 +1412,8 @@
 
         // 配置参数（可通过设置面板调整）
         const CONFIG = {
-            treeDistance: 35,
-            scatterDistance: 45,
+            treeDistance: 45,
+            scatterDistance: 55,
             focusDistance: 8,
             treeRotate: 0.3,
             scatterRotate: 0.1,
@@ -2514,8 +2514,8 @@
 
             // 恢复默认
             resetBtn.addEventListener('click', () => {
-                CONFIG.treeDistance = 35;
-                CONFIG.scatterDistance = 45;
+                CONFIG.treeDistance = 45;
+                CONFIG.scatterDistance = 55;
                 CONFIG.focusDistance = 8;
                 CONFIG.treeRotate = 0.3;
                 CONFIG.scatterRotate = 0.1;
@@ -2806,13 +2806,13 @@
                 
                 if (isLeftMouseDown) {
                     if (STATE.mode === 'FOCUS') {
-                        // FOCUS模式下左键拖动平移镜头
-                        STATE.pinch.offsetX += deltaX * PAN_SENSITIVITY / STATE.pinch.zoom;
-                        STATE.pinch.offsetY -= deltaY * PAN_SENSITIVITY / STATE.pinch.zoom;
+                        // FOCUS模式下左键拖动平移照片
+                        STATE.handPinch.offsetX -= deltaX * PAN_SENSITIVITY;
+                        STATE.handPinch.offsetY += deltaY * PAN_SENSITIVITY;
                         
-                        const maxOffset = 10 / STATE.pinch.zoom;
-                        STATE.pinch.offsetX = Math.max(-maxOffset, Math.min(maxOffset, STATE.pinch.offsetX));
-                        STATE.pinch.offsetY = Math.max(-maxOffset, Math.min(maxOffset, STATE.pinch.offsetY));
+                        const maxOffset = 5;
+                        STATE.handPinch.offsetX = Math.max(-maxOffset, Math.min(maxOffset, STATE.handPinch.offsetX));
+                        STATE.handPinch.offsetY = Math.max(-maxOffset, Math.min(maxOffset, STATE.handPinch.offsetY));
                     } else {
                         // 其他模式左键拖动旋转
                         STATE.rotation.y += deltaX * 0.005;
@@ -2822,9 +2822,9 @@
                     mouseStartX = e.clientX;
                     mouseStartY = e.clientY;
                 } else if (isRightMouseDown) {
-                    // 右键拖动平移
+                    // 右键拖动平移（非FOCUS模式）
                     STATE.pinch.offsetX += deltaX * PAN_SENSITIVITY / STATE.pinch.zoom;
-                    STATE.pinch.offsetY -= deltaY * PAN_SENSITIVITY / STATE.pinch.zoom; // Y轴反向
+                    STATE.pinch.offsetY -= deltaY * PAN_SENSITIVITY / STATE.pinch.zoom;
                     
                     // 限制平移范围
                     const maxOffset = 10 / STATE.pinch.zoom;
