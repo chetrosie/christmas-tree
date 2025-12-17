@@ -1062,7 +1062,7 @@
             }
 
             .mobile-ctrl-btn i {
-                font-size: 22px;
+                font-size: 18px;
             }
 
             /* 操作提示 - 移动端隐藏，因为有底部触摸按钮 */
@@ -1070,12 +1070,14 @@
                 display: none;
             }
 
-            /* 摄像头预览 - 移动端缩小 */
+            /* 摄像头预览 - 移动端缩小并移到左上角 */
             #webcam-wrapper {
                 width: 100px;
                 height: 75px;
-                bottom: 5px;
-                right: 5px;
+                top: 60px;
+                left: 10px;
+                bottom: auto;
+                right: auto;
             }
 
             /* 模态框适配 */
@@ -1331,11 +1333,11 @@
         #mobile-controls {
             display: none;
             position: fixed;
-            bottom: 100px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 25;
-            gap: 15px;
+            gap: 12px;
             pointer-events: auto;
         }
 
@@ -1350,13 +1352,13 @@
         }
 
         .mobile-ctrl-btn {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: rgba(0, 0, 0, 0.5);
             border: 2px solid rgba(255, 255, 255, 0.3);
             color: #fff;
-            font-size: 24px;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1384,7 +1386,7 @@
                 padding-bottom: max(12px, env(safe-area-inset-bottom));
             }
             #mobile-controls {
-                bottom: max(100px, calc(80px + env(safe-area-inset-bottom)));
+                bottom: max(50px, calc(50px + env(safe-area-inset-bottom)));
             }
         }
     </style>
@@ -1661,14 +1663,19 @@
                     <div class="settings-section">
                         <div class="section-title">🔵 装饰球</div>
                         <div class="setting-item">
-                            <label>蓝色球数量</label>
-                            <input type="range" id="cfg-ornament-count" min="50" max="500" value="300" step="10">
-                            <span class="setting-value" id="cfg-ornament-count-val">300</span>
+                            <label>主色球数量</label>
+                            <input type="range" id="cfg-ornament-count" min="100" max="600" value="400" step="10">
+                            <span class="setting-value" id="cfg-ornament-count-val">400</span>
                         </div>
                         <div class="setting-item">
-                            <label>白色球数量</label>
-                            <input type="range" id="cfg-whiteball-count" min="0" max="300" value="100" step="10">
-                            <span class="setting-value" id="cfg-whiteball-count-val">100</span>
+                            <label>副色球数量</label>
+                            <input type="range" id="cfg-whiteball-count" min="50" max="300" value="150" step="10">
+                            <span class="setting-value" id="cfg-whiteball-count-val">150</span>
+                        </div>
+                        <div class="setting-item">
+                            <label>方块数量</label>
+                            <input type="range" id="cfg-box-count" min="0" max="300" value="100" step="10">
+                            <span class="setting-value" id="cfg-box-count-val">100</span>
                         </div>
                     </div>
                     <!-- 照片设置 -->
@@ -1761,6 +1768,7 @@
         import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
         import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
         import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+        import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
         import { FilesetResolver, HandLandmarker } from '@mediapipe/tasks-vision';
 
         // 全局变量
@@ -1785,33 +1793,39 @@
                 snowColor: '#ffffff',        // 白色雪花
                 bgGradient: ['#0b1a2a', '#000000'],  // 背景渐变
                 titleGradient: ['#e0f7fa', '#ffffff', '#88ccff'],  // 标题渐变
-                accentColor: '#00ffcc'       // 强调色
+                accentColor: '#00ffcc',      // 强调色
+                bloomStrength: 0.9,          // 泛光强度
+                bloomRadius: 0.5             // 泛光半径
             },
-            // 璀璨金辉 - 金色奢华风格
+            // 璀璨金辉 - 金色奢华风格 (demo同款配色)
             golden: {
                 name: '璀璨金辉',
-                ornamentColor: '#ffd700',    // 金色装饰球
-                whiteBallColor: '#fff8dc',   // 米白色球
-                boxColor: '#1a1000',         // 深棕色方块
-                lightColor: '#ffaa00',       // 橙金色灯光
-                starColor: '#ffffff',        // 白色星星
-                snowColor: '#fffacd',        // 淡金色雪花
-                bgGradient: ['#1a1000', '#000000'],  // 背景渐变
-                titleGradient: ['#ffd700', '#ffffff', '#ffaa00'],  // 标题渐变
-                accentColor: '#ffd700'       // 强调色
+                ornamentColor: '#c09e30',    // 深金色装饰球 (demo同款)
+                whiteBallColor: '#a6202d',   // 暗红色球 (demo同款)
+                boxColor: '#967d2a',         // 深绿色方块 (demo同款)
+                lightColor: '#FFD700',       // 纯金色灯光 (demo同款)
+                starColor: '#FFD700',        // 金色星星 (demo同款)
+                snowColor: '#F5E6BF',        // 浅金色雪花 (demo同款)
+                bgGradient: ['#0a0a05', '#000000'],  // 深色背景渐变
+                titleGradient: ['#D4AF37', '#F5E6BF', '#D4AF37'],  // 标题渐变 (demo同款)
+                accentColor: '#D4AF37',      // 强调色 (demo同款)
+                bloomStrength: 1.4,          // 泛光强度
+                bloomRadius: 0.8             // 泛光半径
             },
             // 经典圣诞 - 红绿传统风格
             classic: {
                 name: '经典圣诞',
-                ornamentColor: '#ff4444',    // 红色装饰球
-                whiteBallColor: '#228b22',   // 森林绿色球
+                ornamentColor: '#b24c4c',    // 红色装饰球
+                whiteBallColor: '#38c838',   // 森林绿色球
                 boxColor: '#0a1a0a',         // 深绿色方块
                 lightColor: '#ff6600',       // 暖橙色灯光
                 starColor: '#ffd700',        // 金色星星
                 snowColor: '#ffffff',        // 白色雪花
                 bgGradient: ['#0a1a0a', '#000000'],  // 背景渐变
                 titleGradient: ['#ff4444', '#ffffff', '#228b22'],  // 标题渐变
-                accentColor: '#ff4444'       // 强调色
+                accentColor: '#ff4444',      // 强调色
+                bloomStrength: 1.8,          // 泛光强度
+                bloomRadius: 1.0             // 泛光半径
             }
         };
 
@@ -1825,17 +1839,22 @@
             focusDistance: 8,
             treeRotate: 0.3,
             scatterRotate: 0.1,
-            bloomStrength: 1.8,
-            bloomRadius: 1,
+            bloomStrength: 0.9,
+            bloomRadius: 0.5,
             starGlow: 3,
             starBlink: 1,
             snowSpeed: 0.03,
             snowSize: 0.2,
             snowCount: 1000,             // 雪花数量
             photoScale: 2.5,
-            // 数量配置
-            ornamentCount: 300,          // 装饰球数量（蓝色）
-            whiteBallCount: 100,         // 白色球数量
+            // 数量配置 (参考demo调整)
+            ornamentCount: 400,          // 装饰球数量（增加，更紧密）
+            whiteBallCount: 150,         // 白色球数量（增加）
+            boxCount: 250,               // 方块数量（减少，可调节）
+            candyCount: 60,              // 糖果棒数量
+            // 球体大小配置
+            ballSizeMin: 0.3,            // 球最小尺寸（增大）
+            ballSizeMax: 1.2,            // 球最大尺寸（增大）
             // 颜色配置
             ornamentColor: '#88ccff',    // 装饰球颜色
             whiteBallColor: '#ffffff',   // 白色球颜色
@@ -2016,54 +2035,90 @@
             scene.fog = new THREE.FogExp2(0x111111, 0.02);
 
             camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.set(0, 2, 50);
+            camera.position.set(0, 3, 45);  // 调整相机位置，稍微往上看
 
             renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-            renderer.toneMapping = THREE.ReinhardToneMapping;
-            renderer.toneMappingExposure = 2.2;
+            // 优化色调映射，增强金属反光效果
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;  // 电影级色调映射
+            renderer.toneMappingExposure = 1.5;
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
             container.appendChild(renderer.domElement);
 
-            scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+            // 创建高质量环境贴图 - 使用HDR文件
+            const pmremGenerator = new THREE.PMREMGenerator(renderer);
+            pmremGenerator.compileEquirectangularShader();
+            
+            // 加载HDR环境贴图
+            const rgbeLoader = new RGBELoader();
+            rgbeLoader.load(
+                'blocky_photo_studio_1k.hdr',
+                (texture) => {
+                    const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+                    scene.environment = envMap;
+                    texture.dispose();
+                    pmremGenerator.dispose();
+                    console.log('HDR环境贴图加载成功');
+                },
+                undefined,
+                (error) => {
+                    console.warn('HDR加载失败，使用默认环境:', error);
+                    // 失败时使用默认环境
+                    const roomEnv = new RoomEnvironment();
+                    const envTexture = pmremGenerator.fromScene(roomEnv, 0.5).texture;
+                    scene.environment = envTexture;
+                }
+            );
+            // 不设置背景，保持透明黑色背景
+            // scene.background = envTexture;
+            
+            // 清理PMREM生成器
+            pmremGenerator.dispose();
 
             mainGroup = new THREE.Group();
             scene.add(mainGroup);
         }
 
-        // 创建材质
+        // 创建材质 (参考demo的3D效果，增强反射)
         function createMaterials() {
+            // 装饰球材质 - 高金属感、低粗糙度，强反射
             MATERIALS.gold = new THREE.MeshStandardMaterial({
                 color: 0x88ccff,
-                metalness: 1.0,
-                roughness: 0.1,
-                envMapIntensity: 2.0,
-                emissive: 0x002244,
-                emissiveIntensity: 0.3
+                metalness: 1.0,           // 最高金属感
+                roughness: 0.05,          // 更低粗糙度，更强反射
+                envMapIntensity: 2.0,     // 增强环境贴图强度
+                emissive: 0x001122,
+                emissiveIntensity: 0.1
             });
 
+            // 方块材质
             MATERIALS.green = new THREE.MeshStandardMaterial({
                 color: 0x051020,
-                metalness: 0.2,
-                roughness: 0.8,
+                metalness: 0.5,
+                roughness: 0.3,
+                envMapIntensity: 1.0,
                 emissive: 0x000510,
                 emissiveIntensity: 0.2
             });
 
-            MATERIALS.red = new THREE.MeshPhysicalMaterial({
+            // 白色球/第二种球材质 - 高金属感，强反射
+            MATERIALS.red = new THREE.MeshStandardMaterial({
                 color: 0xffffff,
-                metalness: 0.3,
-                roughness: 0.2,
-                clearcoat: 1.0,
-                emissive: 0x222222
+                metalness: 1.0,           // 最高金属感
+                roughness: 0.05,          // 更低粗糙度，更强反射
+                envMapIntensity: 2.0,     // 增强环境贴图强度
+                emissive: 0x111111,
+                emissiveIntensity: 0.05
             });
 
             MATERIALS.frame = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
+            // 星星材质 - 发光效果
             MATERIALS.star = new THREE.MeshStandardMaterial({
                 color: 0xffff00,
-                emissive: 0xffaa00,
-                emissiveIntensity: 2.5,
+                emissive: 0xFFD700,        // 金色发光 (demo同款)
+                emissiveIntensity: 1.5,
                 metalness: 0.9,
                 roughness: 0.1,
                 toneMapped: false
@@ -2094,28 +2149,41 @@
         // 灯光引用
         let innerLight;
         
-        // 设置灯光
+        // 设置灯光 (优化反光效果，参考demo)
         function setupLights() {
-            scene.add(new THREE.AmbientLight(0xffffff, 0.6));
+            // 环境光 - 提供基础照明
+            scene.add(new THREE.AmbientLight(0x004422, 0.3));  // 深绿色环境光
 
+            // 内部点光源 - 树内部发光
             innerLight = new THREE.PointLight(0x0066ff, 2, 20);
             innerLight.position.set(0, 5, 0);
             mainGroup.add(innerLight);
 
-            const spot1 = new THREE.SpotLight(0xeefbff, 1500);
-            spot1.position.set(30, 40, 40);
+            // 主聚光灯 - 从右上方照射，产生高光
+            const spot1 = new THREE.SpotLight(0xfff5cc, 2);  // 暖白色
+            spot1.position.set(10, 20, 10);
+            spot1.angle = 0.3;
+            spot1.penumbra = 1;
+            spot1.castShadow = true;
             scene.add(spot1);
 
-            const spot2 = new THREE.SpotLight(0x8844ff, 800);
-            spot2.position.set(-30, 20, -30);
-            scene.add(spot2);
+            // 辅助点光源 - 金色光，增强金属反光
+            const goldLight = new THREE.PointLight(0xD4AF37, 1.5, 50);
+            goldLight.position.set(-10, 5, -10);
+            scene.add(goldLight);
 
-            const fill = new THREE.DirectionalLight(0xaaccff, 0.8);
+            // 填充光 - 从正面照射
+            const fill = new THREE.DirectionalLight(0xffffff, 0.5);
             fill.position.set(0, 0, 50);
             scene.add(fill);
+
+            // 顶部光 - 照亮星星
+            const topLight = new THREE.PointLight(0xFFD700, 2, 30);
+            topLight.position.set(0, 15, 5);
+            scene.add(topLight);
         }
 
-        // 粒子类
+        // 粒子类 (参考demo优化分布)
         class Particle {
             constructor(mesh, type) {
                 this.mesh = mesh;
@@ -2129,12 +2197,23 @@
                     Math.random() - 0.5
                 ).multiplyScalar(type === 'PHOTO' ? 0.3 : 2.0);
 
-                // 树形位置
-                const h = 24, halfH = 12;
-                let t = Math.pow(Math.random(), 0.8);
-                const y = (t * h) - halfH;
-                const r = Math.max(0.5, 8 * (1.0 - t)) * (0.8 + Math.random() * 0.4);
-                const a = t * 50 * Math.PI + Math.random() * Math.PI;
+                // 树形位置 (参考demo的分布算法)
+                const treeHeight = 18;   // 树的高度（增高）
+                const baseRadius = 6;    // 底部半径
+                const treeBaseY = -10;    // 树底部的Y坐标
+                
+                // t值分布：使用平方让底部更密集
+                const t = Math.pow(Math.random(), 1.5);
+                const y = treeBaseY + t * treeHeight;  // 从-7到11
+                
+                // 半径随高度递减，底部更宽
+                const radiusFactor = 1 - t;
+                const r = baseRadius * radiusFactor + Math.random() * 0.5;
+                
+                // 使用黄金角度螺旋分布
+                const goldenAngle = 2.39996;
+                const a = goldenAngle * (Math.random() * 1000);
+                
                 this.posTree.set(Math.cos(a) * r, y, Math.sin(a) * r);
 
                 // 散开位置
@@ -2175,7 +2254,7 @@
             }
         }
 
-        // 创建粒子系统
+        // 创建粒子系统 (参考demo调整球的大小和分布)
         function createParticles() {
             const sphere = new THREE.SphereGeometry(0.5, 32, 32);
             const box = new THREE.BoxGeometry(0.55, 0.55, 0.55);
@@ -2187,40 +2266,43 @@
             ]);
             const candy = new THREE.TubeGeometry(curve, 16, 0.08, 8, false);
 
-            // 创建装饰球（蓝色）
+            // 创建装饰球（主色球）- 更大、更紧密
             for (let i = 0; i < CONFIG.ornamentCount; i++) {
                 const mesh = new THREE.Mesh(sphere, MATERIALS.gold);
-                const s = 0.4 + Math.random() * 0.5;
+                // 球的大小：底部更大，顶部更小（参考demo）
+                const sizeRange = CONFIG.ballSizeMax - CONFIG.ballSizeMin;
+                const s = CONFIG.ballSizeMin + Math.random() * sizeRange;
                 mesh.scale.set(s, s, s);
                 mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
                 mainGroup.add(mesh);
                 particleSystem.push(new Particle(mesh, 'GOLD_SPHERE'));
             }
 
-            // 创建白色球
+            // 创建白色球/第二色球 - 更大
             for (let i = 0; i < CONFIG.whiteBallCount; i++) {
                 const mesh = new THREE.Mesh(sphere, MATERIALS.red);
-                const s = 0.4 + Math.random() * 0.5;
+                const sizeRange = CONFIG.ballSizeMax - CONFIG.ballSizeMin;
+                const s = CONFIG.ballSizeMin + Math.random() * sizeRange;
                 mesh.scale.set(s, s, s);
                 mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
                 mainGroup.add(mesh);
                 particleSystem.push(new Particle(mesh, 'RED'));
             }
 
-            // 创建方块（绿色和金色）
-            for (let i = 0; i < 600; i++) {
+            // 创建方块（绿色和金色）- 使用配置的数量
+            for (let i = 0; i < CONFIG.boxCount; i++) {
                 const isGold = Math.random() < 0.4;
                 const mesh = new THREE.Mesh(box, isGold ? MATERIALS.gold : MATERIALS.green);
                 const type = isGold ? 'GOLD_BOX' : 'BOX';
-                const s = 0.4 + Math.random() * 0.5;
+                const s = 0.4 + Math.random() * 0.4;
                 mesh.scale.set(s, s, s);
                 mesh.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
                 mainGroup.add(mesh);
                 particleSystem.push(new Particle(mesh, type));
             }
 
-            // 创建糖果棒
-            for (let i = 0; i < 50; i++) {
+            // 创建糖果棒 - 使用配置的数量
+            for (let i = 0; i < CONFIG.candyCount; i++) {
                 const mesh = new THREE.Mesh(candy, MATERIALS.candy);
                 const s = 0.4 + Math.random() * 0.5;
                 mesh.scale.set(s, s, s);
@@ -2256,13 +2338,13 @@
             starGeometry.center();
             
             const topStar = new THREE.Mesh(starGeometry, MATERIALS.star);
-            topStar.position.set(0, 13.5, 0);
+            topStar.position.set(0, 9, 0);  // 调整到树顶上方
             // 不旋转，让星星正面朝向相机（Z轴方向）
             mainGroup.add(topStar);
             
             // 星星点光源
             const starLight = new THREE.PointLight(0xffd700, 2, 10);
-            starLight.position.set(0, 13.5, 0);
+            starLight.position.set(0, 9, 0);  // 与星星同步
             mainGroup.add(starLight);
             
             // 保存引用用于动画
@@ -2914,6 +2996,10 @@
             CONFIG.lightColor = theme.lightColor;
             CONFIG.starColor = theme.starColor;
             CONFIG.snowColor = theme.snowColor;
+            
+            // 更新泛光参数
+            CONFIG.bloomStrength = theme.bloomStrength;
+            CONFIG.bloomRadius = theme.bloomRadius;
 
             // 应用颜色到场景
             applyColorSettings();
@@ -2943,6 +3029,12 @@
             document.getElementById('cfg-light-color').value = theme.lightColor;
             document.getElementById('cfg-star-color').value = theme.starColor;
             document.getElementById('cfg-snow-color').value = theme.snowColor;
+            
+            // 更新泛光滑块的值
+            document.getElementById('cfg-bloom-strength').value = theme.bloomStrength * 10;
+            document.getElementById('cfg-bloom-strength-val').textContent = theme.bloomStrength.toFixed(1);
+            document.getElementById('cfg-bloom-radius').value = theme.bloomRadius * 10;
+            document.getElementById('cfg-bloom-radius-val').textContent = theme.bloomRadius.toFixed(1);
 
             // 更新主题按钮状态
             document.querySelectorAll('.theme-btn').forEach(btn => {
@@ -3003,6 +3095,7 @@
                 'cfg-snow-count': { config: 'snowCount', display: v => v },
                 'cfg-ornament-count': { config: 'ornamentCount', display: v => v },
                 'cfg-whiteball-count': { config: 'whiteBallCount', display: v => v },
+                'cfg-box-count': { config: 'boxCount', display: v => v },
                 'cfg-photo-scale': { config: 'photoScale', display: v => (v / 10).toFixed(1) }
             };
 
@@ -3032,6 +3125,7 @@
                 CONFIG.snowCount = parseInt(document.getElementById('cfg-snow-count').value);
                 CONFIG.ornamentCount = parseInt(document.getElementById('cfg-ornament-count').value);
                 CONFIG.whiteBallCount = parseInt(document.getElementById('cfg-whiteball-count').value);
+                CONFIG.boxCount = parseInt(document.getElementById('cfg-box-count').value);
                 CONFIG.photoScale = parseInt(document.getElementById('cfg-photo-scale').value) / 10;
                 
                 // 获取颜色配置
@@ -3055,15 +3149,16 @@
                 CONFIG.focusDistance = 8;
                 CONFIG.treeRotate = 0.3;
                 CONFIG.scatterRotate = 0.1;
-                CONFIG.bloomStrength = 1.8;
-                CONFIG.bloomRadius = 1;
+                CONFIG.bloomStrength = 0.9;
+                CONFIG.bloomRadius = 0.5;
                 CONFIG.starGlow = 3;
                 CONFIG.starBlink = 1;
                 CONFIG.snowSpeed = 0.03;
                 CONFIG.snowSize = 0.2;
                 CONFIG.snowCount = 1000;
-                CONFIG.ornamentCount = 300;
-                CONFIG.whiteBallCount = 100;
+                CONFIG.ornamentCount = 400;
+                CONFIG.whiteBallCount = 150;
+                CONFIG.boxCount = 100;
                 CONFIG.photoScale = 2.5;
                 // 恢复到冰雪奇缘主题
                 applyTheme('frozen');
@@ -3151,6 +3246,8 @@
             document.getElementById('cfg-ornament-count-val').textContent = CONFIG.ornamentCount;
             document.getElementById('cfg-whiteball-count').value = CONFIG.whiteBallCount;
             document.getElementById('cfg-whiteball-count-val').textContent = CONFIG.whiteBallCount;
+            document.getElementById('cfg-box-count').value = CONFIG.boxCount;
+            document.getElementById('cfg-box-count-val').textContent = CONFIG.boxCount;
             // 加载颜色配置
             document.getElementById('cfg-ornament-color').value = CONFIG.ornamentColor;
             document.getElementById('cfg-whiteball-color').value = CONFIG.whiteBallColor;
@@ -4067,9 +4164,9 @@
                     camZ = isMobile ? 45 : CONFIG.treeDistance;
                 }
                 
-                // 保留捏合平移的偏移量
-                STATE.camera.targetPos.set(STATE.pinch.offsetX, 2 + STATE.pinch.offsetY, camZ);
-                STATE.camera.targetLookAt.set(STATE.pinch.offsetX, STATE.pinch.offsetY, 0);
+                // 保留捏合平移的偏移量，相机看向树的中心位置
+                STATE.camera.targetPos.set(STATE.pinch.offsetX, 3 + STATE.pinch.offsetY, camZ);
+                STATE.camera.targetLookAt.set(STATE.pinch.offsetX, 1 + STATE.pinch.offsetY, 0);
             }
             
             // 相机平滑移动
@@ -4098,7 +4195,7 @@
                 // 缓慢旋转
                 window.topStar.rotation.z += 0.3 * dt;
                 // 上下漂浮
-                window.topStar.position.y = 13.5 + Math.sin(time * 1.5) * 0.2;
+                window.topStar.position.y = 9 + Math.sin(time * 1.5) * 0.2;
                 // 星星整体发光闪烁 - 慢慢变化
                 const glowIntensity = CONFIG.starGlow + Math.sin(time * CONFIG.starBlink) * 1.0;
                 MATERIALS.star.emissiveIntensity = glowIntensity;
